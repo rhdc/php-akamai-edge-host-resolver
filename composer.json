@@ -15,6 +15,7 @@
     },
     "require-dev": {
         "jakub-onderka/php-parallel-lint": "^0.9.2",
+        "phpunit/phpunit": "^4.8.36 || ^5.7.11 || ^6.0.5",
         "squizlabs/php_codesniffer": "^2 || ^3"
     },
     "suggest": {
@@ -39,7 +40,8 @@
         ],
         "cs:check": "phpcs --standard=PSR2 src/ tests/",
         "cs:fix": "phpcbf --standard=PSR2 src/ tests/",
-        "lint": "parallel-lint src/ tests/"
+        "lint": "parallel-lint src/ tests/",
+        "test": "phpunit"
     },
     "extra": {
         "branch-alias": {
