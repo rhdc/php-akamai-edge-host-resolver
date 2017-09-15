@@ -1,0 +1,40 @@
+{
+    "name": "rhdc/akamai-edge-host-resolver",
+    "description": "Resolves host names to Akamai edge prod/staging host names or IP addresses",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Shawn Iwinski",
+            "email": "siwinski@redhat.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+    },
+    "require-dev": {
+    },
+    "suggest": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Rhdc\\Akamai\\Edge\\HostResolver\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rhdc\\Akamai\\Edge\\HostResolver\\Test\\": "tests"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.x-dev"
+        }
+    }
+}
