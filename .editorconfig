@@ -1,0 +1,16 @@
+# http://editorconfig.org/
+
+# This is the top-most .editorconfig file
+root = true
+
+# PHP PSR-2 Coding Standards
+# http://www.php-fig.org/psr/psr-2/
+
+# All files
+[*]
+charset = utf-8
+end_of_line = LF
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
