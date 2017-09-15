@@ -33,6 +33,10 @@
         "sort-packages": true
     },
     "scripts": {
+        "check": [
+            "@lint",
+            "@cs:check"
+        ],
         "cs:check": "phpcs --standard=PSR2 src/ tests/",
         "cs:fix": "phpcbf --standard=PSR2 src/ tests/",
         "lint": "parallel-lint src/ tests/"
