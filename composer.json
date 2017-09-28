@@ -1,5 +1,5 @@
 {
-    "name": "rhdc/akamai-edge-host-resolver",
+    "name": "rhdc/akamai-edge-resolver",
     "description": "Resolves host names to Akamai edge prod/staging host names or IP addresses",
     "license": "MIT",
     "type": "library",
@@ -23,12 +23,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Rhdc\\Akamai\\Edge\\HostResolver\\": "src"
+            "Rhdc\\Akamai\\Edge\\Resolver\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Rhdc\\Akamai\\Edge\\HostResolver\\Test\\": "tests"
+            "Rhdc\\Akamai\\Edge\\Resolver\\Test\\": "tests"
         }
     },
     "config": {

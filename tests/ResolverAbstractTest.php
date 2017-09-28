@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is part of the RHDC Akamai edge host resolver package.
+ * This file is part of the RHDC Akamai edge resolver package.
  *
  * (c) Shawn Iwinski <siwinski@redhat.com>
  *
@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Rhdc\Akamai\Edge\HostResolver\Test;
+namespace Rhdc\Akamai\Edge\Resolver\Test;
 
 use PHPUnit\Framework\TestCase;
-use Rhdc\Akamai\Edge\HostResolver\ResolverAbstract;
-use Rhdc\Akamai\Edge\HostResolver\ResolverInterface;
+use Rhdc\Akamai\Edge\Resolver\ResolverAbstract;
+use Rhdc\Akamai\Edge\Resolver\ResolverInterface;
 
 class ResolverAbstractTest extends TestCase
 {
@@ -25,7 +25,7 @@ class ResolverAbstractTest extends TestCase
         // @todo Change to `ResolverAbstract::class` when PHP 5.3 and 5.4
         //       support is dropped
         $this->stub = $this->getMockForAbstractClass(
-            'Rhdc\\Akamai\\Edge\\HostResolver\\ResolverAbstract'
+            'Rhdc\\Akamai\\Edge\\Resolver\\ResolverAbstract'
         );
 
         $this->stub

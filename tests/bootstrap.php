@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is part of the RHDC Akamai edge host resolver package.
+ * This file is part of the RHDC Akamai edge resolver package.
  *
  * (c) Shawn Iwinski <siwinski@redhat.com>
  *

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This file is part of the RHDC Akamai edge host resolver package.
+ * This file is part of the RHDC Akamai edge resolver package.
  *
  * (c) Shawn Iwinski <siwinski@redhat.com>
  *
@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Rhdc\Akamai\Edge\HostResolver;
+namespace Rhdc\Akamai\Edge\Resolver;
 
 abstract class ResolverAbstract implements ResolverInterface
 {
