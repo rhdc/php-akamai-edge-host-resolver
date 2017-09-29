@@ -31,10 +31,6 @@ class ResolverAbstractTest extends TestCase
         $this->stub
             ->method('resolve')
             ->will($this->returnArgument(0));
-
-        $this->stub
-            ->method('resolveIp')
-            ->willReturn('0.0.0.0');
     }
 
     /**
@@ -132,6 +128,48 @@ class ResolverAbstractTest extends TestCase
     }
 
     /**
+     * @dataProvider isEdgeHostProvider
+     */
+    public function testIsEdgeHost($host, $expectedResult)
+    {
+        $this->assertSame($expectedResult, $this->stub->isEdgeHost($host));
+    }
+
+    public function isEdgeHostProvider()
+    {
+        return array(
+            array(ResolverInterface::EDGE_DOMAIN, true),
+            array(ResolverInterface::EDGE_DOMAIN.'.', true),
+            array(" \t".PHP_EOL.ResolverInterface::EDGE_DOMAIN." \t".PHP_EOL, true),
+            array(" \t".PHP_EOL.ResolverInterface::EDGE_DOMAIN.". \t".PHP_EOL, true),
+            array(ResolverInterface::EDGE_STAGING_DOMAIN, false),
+            array(ResolverInterface::EDGE_STAGING_DOMAIN.'.', false),
+            array('www.akamai.com', false),
+        );
+    }
+
+    /**
+     * @dataProvider isEdgeStagingHostProvider
+     */
+    public function testIsEdgeStagingHost($host, $expectedResult)
+    {
+        $this->assertSame($expectedResult, $this->stub->isEdgeStagingHost($host));
+    }
+
+    public function isEdgeStagingHostProvider()
+    {
+        return array(
+            array(ResolverInterface::EDGE_STAGING_DOMAIN, true),
+            array(ResolverInterface::EDGE_STAGING_DOMAIN.'.', true),
+            array(" \t".PHP_EOL.ResolverInterface::EDGE_STAGING_DOMAIN." \t".PHP_EOL, true),
+            array(" \t".PHP_EOL.ResolverInterface::EDGE_STAGING_DOMAIN.". \t".PHP_EOL, true),
+            array(ResolverInterface::EDGE_DOMAIN, false),
+            array(ResolverInterface::EDGE_DOMAIN.'.', false),
+            array('www.akamai.com', false),
+        );
+    }
+
+    /**
      * @dataProvider resolveStagingHostProvider
      */
     public function testResolveStagingHost($host, $expected)
@@ -142,17 +180,9 @@ class ResolverAbstractTest extends TestCase
     public function resolveStagingHostProvider()
     {
         return array(
-            array('test.'.ResolverInterface::DOMAIN, 'test.'.ResolverInterface::STAGING_DOMAIN),
-            array('test.'.ResolverInterface::DOMAIN.'.', 'test.'.ResolverInterface::STAGING_DOMAIN.'.'),
+            array('test.'.ResolverInterface::EDGE_DOMAIN, 'test.'.ResolverInterface::EDGE_STAGING_DOMAIN),
+            array('test.'.ResolverInterface::EDGE_DOMAIN.'.', 'test.'.ResolverInterface::EDGE_STAGING_DOMAIN.'.'),
             array('www.akamai.com', 'www.akamai.com'),
-        );
-    }
-
-    public function testResolveStagingIp()
-    {
-        $this->assertEquals(
-            '0.0.0.0',
-            $this->stub->resolveStaging('www.akamai.com', ResolverInterface::RESOLVE_IP)
         );
     }
 }

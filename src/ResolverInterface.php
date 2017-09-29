@@ -13,13 +13,15 @@ namespace Rhdc\Akamai\Edge\Resolver;
 
 interface ResolverInterface
 {
-    const DOMAIN = 'akamaiedge.net';
+    const EDGE_DOMAIN = 'akamaiedge.net';
 
-    const STAGING_DOMAIN = 'akamaiedge-staging.net';
+    const EDGE_STAGING_DOMAIN = 'akamaiedge-staging.net';
 
     const RESOLVE_HOST = 'host';
 
-    const RESOLVE_IP = 'ip';
+    const RESOLVE_IP_V4 = 'ip-v4';
+
+    const RESOLVE_IP_V6 = 'ip-v6';
 
     public function normalizeHost($host);
 
@@ -30,6 +32,10 @@ interface ResolverInterface
     public function getResolvableHosts();
 
     public function isResolvableHost($host);
+
+    public function isEdgeHost($host);
+
+    public function isEdgeStagingHost($host);
 
     public function resolve($host, $resolve = self::RESOLVE_HOST);
 

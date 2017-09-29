@@ -13,6 +13,10 @@ namespace Rhdc\Akamai\Edge\Resolver;
 
 abstract class ResolverAbstract implements ResolverInterface
 {
+    protected static $edgeHostRegex;
+
+    protected static $edgeStagingHostRegex;
+
     /** @var string[] */
     protected $resolvableHosts = array();
 
@@ -42,18 +46,34 @@ abstract class ResolverAbstract implements ResolverInterface
             || in_array($this->normalizeHost($host), $this->resolvableHosts);
     }
 
+    public function isEdgeHost($host)
+    {
+        if (!isset(static::$edgeHostRegex)) {
+            static::$edgeHostRegex = '/'.preg_quote(static::EDGE_DOMAIN).'\.?$/';
+        }
+
+        return (bool) preg_match(static::$edgeHostRegex, $this->normalizeHost($host));
+    }
+
+    public function isEdgeStagingHost($host)
+    {
+        if (!isset(static::$edgeStagingHostRegex)) {
+            static::$edgeStagingHostRegex = '/'.preg_quote(static::EDGE_STAGING_DOMAIN).'\.?$/';
+        }
+
+        return (bool) preg_match(static::$edgeStagingHostRegex, $this->normalizeHost($host));
+    }
+
     public function resolveStaging($host, $resolve = ResolverInterface::RESOLVE_HOST)
     {
         $stagingHost = str_replace(
-            ResolverInterface::DOMAIN,
-            ResolverInterface::STAGING_DOMAIN,
-            $this->resolve($host)
+            ResolverInterface::EDGE_DOMAIN,
+            ResolverInterface::EDGE_STAGING_DOMAIN,
+            $this->resolve($host, ResolverInterface::RESOLVE_HOST)
         );
 
-        return (ResolverInterface::RESOLVE_IP === $resolve)
-            ? $this->resolveIp($stagingHost)
-            : $stagingHost;
+        return ($resolve === ResolverInterface::RESOLVE_HOST)
+            ? $stagingHost
+            : $this->resolve($stagingHost, $resolve);
     }
-
-    abstract protected function resolveIp($host);
 }
