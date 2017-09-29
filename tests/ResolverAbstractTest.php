@@ -140,6 +140,8 @@ class ResolverAbstractTest extends TestCase
         return array(
             array(ResolverInterface::EDGE_DOMAIN, true),
             array(ResolverInterface::EDGE_DOMAIN.'.', true),
+            array('test.'.ResolverInterface::EDGE_DOMAIN, true),
+            array('test.'.ResolverInterface::EDGE_DOMAIN.'.', true),
             array(" \t".PHP_EOL.ResolverInterface::EDGE_DOMAIN." \t".PHP_EOL, true),
             array(" \t".PHP_EOL.ResolverInterface::EDGE_DOMAIN.". \t".PHP_EOL, true),
             array(ResolverInterface::EDGE_STAGING_DOMAIN, false),
@@ -161,6 +163,8 @@ class ResolverAbstractTest extends TestCase
         return array(
             array(ResolverInterface::EDGE_STAGING_DOMAIN, true),
             array(ResolverInterface::EDGE_STAGING_DOMAIN.'.', true),
+            array('test.'.ResolverInterface::EDGE_STAGING_DOMAIN, true),
+            array('test.'.ResolverInterface::EDGE_STAGING_DOMAIN.'.', true),
             array(" \t".PHP_EOL.ResolverInterface::EDGE_STAGING_DOMAIN." \t".PHP_EOL, true),
             array(" \t".PHP_EOL.ResolverInterface::EDGE_STAGING_DOMAIN.". \t".PHP_EOL, true),
             array(ResolverInterface::EDGE_DOMAIN, false),
