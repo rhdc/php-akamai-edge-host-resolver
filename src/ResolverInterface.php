@@ -5,8 +5,8 @@
  *
  * (c) Shawn Iwinski <siwinski@redhat.com>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  */
 
 namespace Rhdc\Akamai\Edge\Resolver;
@@ -33,11 +33,7 @@ interface ResolverInterface
 
     public function isResolvableHost($host);
 
-    public function isEdgeHost($host);
+    public function isEdgeHost($host, $staging = false);
 
-    public function isEdgeStagingHost($host);
-
-    public function resolve($host, $resolve = self::RESOLVE_HOST);
-
-    public function resolveStaging($host, $resolve = self::RESOLVE_HOST);
+    public function resolve($host, $resolve = self::RESOLVE_HOST, $staging = false);
 }
