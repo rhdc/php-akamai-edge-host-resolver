@@ -5,8 +5,8 @@
  *
  * (c) Shawn Iwinski <siwinski@redhat.com>
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * For the full copyright and license information, please view
+ * the LICENSE file that was distributed with this source code.
  */
 
 namespace Rhdc\Akamai\Edge\Resolver;
@@ -19,6 +19,17 @@ abstract class ResolverAbstract implements ResolverInterface
 
     /** @var string[] */
     protected $resolvableHosts = array();
+
+    public function __construct()
+    {
+        if (!isset(static::$edgeHostRegex)) {
+            static::$edgeHostRegex = '/'.preg_quote(static::EDGE_DOMAIN).'\.?$/';
+        }
+
+        if (!isset(static::$edgeStagingHostRegex)) {
+            static::$edgeStagingHostRegex = '/'.preg_quote(static::EDGE_STAGING_DOMAIN).'\.?$/';
+        }
+    }
 
     public function normalizeHost($host)
     {
@@ -46,34 +57,11 @@ abstract class ResolverAbstract implements ResolverInterface
             || in_array($this->normalizeHost($host), $this->resolvableHosts);
     }
 
-    public function isEdgeHost($host)
+    public function isEdgeHost($host, $staging = false)
     {
-        if (!isset(static::$edgeHostRegex)) {
-            static::$edgeHostRegex = '/'.preg_quote(static::EDGE_DOMAIN).'\.?$/';
-        }
-
-        return (bool) preg_match(static::$edgeHostRegex, $this->normalizeHost($host));
-    }
-
-    public function isEdgeStagingHost($host)
-    {
-        if (!isset(static::$edgeStagingHostRegex)) {
-            static::$edgeStagingHostRegex = '/'.preg_quote(static::EDGE_STAGING_DOMAIN).'\.?$/';
-        }
-
-        return (bool) preg_match(static::$edgeStagingHostRegex, $this->normalizeHost($host));
-    }
-
-    public function resolveStaging($host, $resolve = ResolverInterface::RESOLVE_HOST)
-    {
-        $stagingHost = str_replace(
-            ResolverInterface::EDGE_DOMAIN,
-            ResolverInterface::EDGE_STAGING_DOMAIN,
-            $this->resolve($host, ResolverInterface::RESOLVE_HOST)
+        return (bool) preg_match(
+            $staging ? static::$edgeStagingHostRegex : static::$edgeHostRegex,
+            $this->normalizeHost($host)
         );
-
-        return ($resolve === ResolverInterface::RESOLVE_HOST)
-            ? $stagingHost
-            : $this->resolve($stagingHost, $resolve);
     }
 }

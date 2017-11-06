@@ -27,10 +27,6 @@ class ResolverAbstractTest extends TestCase
         $this->stub = $this->getMockForAbstractClass(
             'Rhdc\\Akamai\\Edge\\Resolver\\ResolverAbstract'
         );
-
-        $this->stub
-            ->method('resolve')
-            ->will($this->returnArgument(0));
     }
 
     /**
@@ -155,7 +151,7 @@ class ResolverAbstractTest extends TestCase
      */
     public function testIsEdgeStagingHost($host, $expectedResult)
     {
-        $this->assertSame($expectedResult, $this->stub->isEdgeStagingHost($host));
+        $this->assertSame($expectedResult, $this->stub->isEdgeHost($host, true));
     }
 
     public function isEdgeStagingHostProvider()
@@ -170,23 +166,6 @@ class ResolverAbstractTest extends TestCase
             array(ResolverInterface::EDGE_DOMAIN, false),
             array(ResolverInterface::EDGE_DOMAIN.'.', false),
             array('www.akamai.com', false),
-        );
-    }
-
-    /**
-     * @dataProvider resolveStagingHostProvider
-     */
-    public function testResolveStagingHost($host, $expected)
-    {
-        $this->assertEquals($expected, $this->stub->resolveStaging($host));
-    }
-
-    public function resolveStagingHostProvider()
-    {
-        return array(
-            array('test.'.ResolverInterface::EDGE_DOMAIN, 'test.'.ResolverInterface::EDGE_STAGING_DOMAIN),
-            array('test.'.ResolverInterface::EDGE_DOMAIN.'.', 'test.'.ResolverInterface::EDGE_STAGING_DOMAIN.'.'),
-            array('www.akamai.com', 'www.akamai.com'),
         );
     }
 }
