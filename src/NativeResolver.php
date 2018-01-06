@@ -77,10 +77,18 @@ class NativeResolver extends ResolverAbstract
 
         $result = $this->dnsGetRecord($host, $dnsGetRecordType);
 
-        // For PHP 5.3 (cannot use `static::` in anonymouse function)
+        // For PHP 5.3 ("PHP Fatal error:  Cannot access static:: when no class scope is active")
+        //
+        // See:
+        // * https://travis-ci.org/rhdc/php-akamai-edge-resolver/jobs/325702874
+        // * https://travis-ci.org/rhdc/php-akamai-edge-resolver/jobs/325702875
         $resultKeyHost = static::RESULT_KEY_HOST;
 
-        $resultNormalized = array_filter(array_map(function ($resultItem) use ($dnsGetRecordResultKey, $resultKeyHost, $staging) {
+        $resultNormalized = array_filter(array_map(function ($resultItem) use (
+            $dnsGetRecordResultKey,
+            $resultKeyHost,
+            $staging
+        ) {
             $host = isset($resultItem[$resultKeyHost])
                 ? $resultItem[$resultKeyHost]
                 : null;
