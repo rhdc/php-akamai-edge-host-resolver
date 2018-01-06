@@ -77,9 +77,12 @@ class NativeResolver extends ResolverAbstract
 
         $result = $this->dnsGetRecord($host, $dnsGetRecordType);
 
-        $resultNormalized = array_filter(array_map(function ($resultItem) use ($dnsGetRecordResultKey, $staging) {
-            $host = isset($resultItem[static::RESULT_KEY_HOST])
-                ? $resultItem[static::RESULT_KEY_HOST]
+        // For PHP 5.3 (cannot use `static::` in anonymouse function)
+        $resultKeyHost = static::RESULT_KEY_HOST;
+
+        $resultNormalized = array_filter(array_map(function ($resultItem) use ($dnsGetRecordResultKey, $resultKeyHost, $staging) {
+            $host = isset($resultItem[$resultKeyHost])
+                ? $resultItem[$resultKeyHost]
                 : null;
 
             if (!isset($host) || !$this->isEdgeHost($host, $staging)) {
