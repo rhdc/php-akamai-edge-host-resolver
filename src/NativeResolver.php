@@ -84,16 +84,24 @@ class NativeResolver extends ResolverAbstract
         // * https://travis-ci.org/rhdc/php-akamai-edge-resolver/jobs/325702875
         $resultKeyHost = static::RESULT_KEY_HOST;
 
+        // For PHP 5.3 ("PHP Fatal error:  Using $this when not in object context")
+        //
+        // See:
+        // * https://travis-ci.org/rhdc/php-akamai-edge-resolver/jobs/325704901
+        // * https://travis-ci.org/rhdc/php-akamai-edge-resolver/jobs/325704902
+        $isEdgeHostCallback = array($this, 'isEdgeHost');
+
         $resultNormalized = array_filter(array_map(function ($resultItem) use (
-            $dnsGetRecordResultKey,
             $resultKeyHost,
-            $staging
+            $isEdgeHostCallback,
+            $staging,
+            $dnsGetRecordResultKey
         ) {
             $host = isset($resultItem[$resultKeyHost])
                 ? $resultItem[$resultKeyHost]
                 : null;
 
-            if (!isset($host) || !$this->isEdgeHost($host, $staging)) {
+            if (!isset($host) || !call_user_func($isEdgeHostCallback, $host, $staging)) {
                 return null;
             }
 
