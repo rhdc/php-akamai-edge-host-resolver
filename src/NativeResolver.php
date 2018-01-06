@@ -24,7 +24,7 @@ class NativeResolver extends ResolverAbstract
 
     public function resolveKeys($resolve)
     {
-        switch($resolve) {
+        switch ($resolve) {
             case static::RESOLVE_HOST:
                 return array(DNS_A, static::RESULT_KEY_HOST);
             case static::RESOLVE_IP_V4:
