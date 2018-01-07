@@ -67,7 +67,7 @@ abstract class ResolverAbstract implements ResolverInterface
 
     abstract protected function resolveQuery($host, $resolve);
 
-    abstract function resolveResultItemValue($resultItem, $resolve);
+    abstract protected function resolveResultItemValue($resultItem, $resolve);
 
     public function resolve($host, $resolve = ResolverInterface::RESOLVE_HOST, $staging = false)
     {

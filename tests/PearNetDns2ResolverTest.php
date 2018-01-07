@@ -91,31 +91,6 @@ class PearNetDns2ResolverTest extends TestCase
     }
 
     /**
-     * @dataProvider resolveKeysProvider
-     */
-    public function testResolveKeys($resolve, $expectedResult)
-    {
-        $this->assertSame($expectedResult, $this->resolver->resolveKeys($resolve));
-    }
-
-    public function resolveKeysProvider()
-    {
-        return array(
-            array(ResolverInterface::RESOLVE_HOST, array('A', PearNetDns2Resolver::RESULT_KEY_HOST)),
-            array(ResolverInterface::RESOLVE_IP_V4, array('A', PearNetDns2Resolver::RESULT_KEY_IP_V4)),
-            array(ResolverInterface::RESOLVE_IP_V6, array('AAAA', PearNetDns2Resolver::RESULT_KEY_IP_V6)),
-        );
-    }
-
-    /**
-     * @expectedException Rhdc\Akamai\Edge\Resolver\Exception\ResolveException
-     */
-    public function testResolveKeysException()
-    {
-        $this->resolver->resolveKeys('_____invalid_____');
-    }
-
-    /**
      * @dataProvider resolveProvider
      */
     public function testResolve($resolve, $staging, $expected)

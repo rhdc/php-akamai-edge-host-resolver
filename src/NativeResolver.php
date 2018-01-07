@@ -55,7 +55,7 @@ class NativeResolver extends ResolverAbstract
         return $this->dnsGetRecord($host, $dnsGetRecordType);
     }
 
-    function resolveResultItemValue($resultItem, $resolve)
+    protected function resolveResultItemValue($resultItem, $resolve)
     {
         switch ($resolve) {
             case ResolverInterface::RESOLVE_HOST:
