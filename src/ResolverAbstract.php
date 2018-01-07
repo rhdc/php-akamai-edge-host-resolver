@@ -9,6 +9,8 @@
  */
 namespace Rhdc\Akamai\Edge\Resolver;
 
+use Rhdc\Akamai\Edge\Resolver\Exception\NotFoundException;
+
 abstract class ResolverAbstract implements ResolverInterface
 {
     protected static $edgeHostRegex;
@@ -61,5 +63,55 @@ abstract class ResolverAbstract implements ResolverInterface
             $staging ? static::$edgeStagingHostRegex : static::$edgeHostRegex,
             $this->normalizeHost($host)
         );
+    }
+
+    abstract protected function resolveQuery($host, $resolve);
+
+    abstract function resolveResultItemValue($resultItem, $resolve);
+
+    public function resolve($host, $resolve = ResolverInterface::RESOLVE_HOST, $staging = false)
+    {
+        if ($staging) {
+            // Get prod edge host, translate to staging edge host, and reset
+            // $host to staging edge host
+            $host = preg_replace(
+                static::$edgeHostRegex,
+                ResolverInterface::EDGE_STAGING_DOMAIN,
+                $this->resolve($host, ResolverInterface::RESOLVE_HOST)
+            );
+
+            if ($resolve === ResolverInterface::RESOLVE_HOST) {
+                return $host;
+            }
+        }
+
+        $result = array();
+
+        foreach ($this->resolveQuery($host, $resolve) as $index => $resultItem) {
+            $host = $this->resolveResultItemValue($resultItem, ResolverInterface::RESOLVE_HOST);
+
+            if (isset($host) && $this->isEdgeHost($host, $staging)) {
+                if ($resolve === ResolverInterface::RESOLVE_HOST) {
+                    $result[] = $host;
+                } else {
+                    $resultItemValue = $this->resolveResultItemValue($resultItem, $resolve);
+
+                    if (isset($resultItemValue)) {
+                        $result[] = $resultItemValue;
+                    }
+                }
+            }
+        }
+
+        if (empty($result)) {
+            throw new NotFoundException(sprintf(
+                'Akamai edge not found for host "%s"',
+                $host
+            ));
+        }
+
+        return $resolve === ResolverInterface::RESOLVE_HOST
+            ? $result[0]
+            : $result;
     }
 }
