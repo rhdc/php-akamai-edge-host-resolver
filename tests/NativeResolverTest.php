@@ -86,32 +86,6 @@ class NativeResolverTest extends TestCase
     }
 
     /**
-     * @dataProvider resolveKeysProvider
-     */
-    public function testResolveKeys($resolve, $expectedResult)
-    {
-        $resolver = $this->createResolver();
-        $this->assertSame($expectedResult, $resolver->resolveKeys($resolve));
-    }
-
-    public function resolveKeysProvider()
-    {
-        return array(
-            array(ResolverInterface::RESOLVE_HOST, array(DNS_A, NativeResolver::RESULT_KEY_HOST)),
-            array(ResolverInterface::RESOLVE_IP_V4, array(DNS_A, NativeResolver::RESULT_KEY_IP_V4)),
-            array(ResolverInterface::RESOLVE_IP_V6, array(DNS_AAAA, NativeResolver::RESULT_KEY_IP_V6)),
-        );
-    }
-
-    /**
-     * @expectedException \RuntimeException
-     */
-    public function testResolveKeysException()
-    {
-        $this->createResolver()->resolveKeys('_____invalid_____');
-    }
-
-    /**
      * @dataProvider resolveProvider
      */
     public function testResolve($resolve, $staging, $expected)
@@ -152,10 +126,4 @@ class NativeResolverTest extends TestCase
             array(true),
         );
     }
-
-    // public function testResolveWithNetwork()
-    // {
-    //     $resolver = $this->createResolver();
-    //     $resolver->resolve('something');
-    // }
 }
