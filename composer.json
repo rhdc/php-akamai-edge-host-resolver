@@ -9,6 +9,11 @@
             "email": "siwinski@redhat.com"
         }
     ],
+    "keywords": [
+        "akamai",
+        "dns",
+        "edge"
+    ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
