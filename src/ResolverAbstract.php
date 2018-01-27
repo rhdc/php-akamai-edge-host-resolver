@@ -9,6 +9,7 @@
  */
 namespace Rhdc\Akamai\Edge\Resolver;
 
+use Psr\SimpleCache\CacheInterface;
 use Rhdc\Akamai\Edge\Resolver\Exception\NotFoundException;
 
 abstract class ResolverAbstract implements ResolverInterface
@@ -16,6 +17,9 @@ abstract class ResolverAbstract implements ResolverInterface
     protected static $edgeHostRegex;
 
     protected static $edgeStagingHostRegex;
+
+    /** @var CacheInterface */
+    protected $cache;
 
     /** @var string[] */
     protected $resolvableHosts = array();
@@ -29,6 +33,17 @@ abstract class ResolverAbstract implements ResolverInterface
         if (!isset(static::$edgeStagingHostRegex)) {
             static::$edgeStagingHostRegex = '/'.preg_quote(static::EDGE_STAGING_DOMAIN).'\.?$/';
         }
+    }
+
+    public function setCache(CacheInterface $cache)
+    {
+        $this->cache = $cache;
+        return $this;
+    }
+
+    public function getCache()
+    {
+        return $this->cache;
     }
 
     public function normalizeHost($host)

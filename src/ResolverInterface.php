@@ -9,6 +9,8 @@
  */
 namespace Rhdc\Akamai\Edge\Resolver;
 
+use Psr\SimpleCache\CacheInterface;
+
 interface ResolverInterface
 {
     const EDGE_DOMAIN = 'akamaiedge.net';
@@ -20,6 +22,10 @@ interface ResolverInterface
     const RESOLVE_IP_V4 = 'ip-v4';
 
     const RESOLVE_IP_V6 = 'ip-v6';
+
+    public function setCache(CacheInterface $cache);
+
+    public function getCache();
 
     public function normalizeHost($host);
 
