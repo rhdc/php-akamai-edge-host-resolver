@@ -52,21 +52,24 @@ class PearNetDns2Resolver extends ResolverAbstract
         }
     }
 
-    protected function resolveResultItemValue($resultItem, $resolve)
+    protected function resolveResultItemValue($resultItem, $resultItemKey)
     {
-        switch ($resolve) {
-            case ResolverInterface::RESOLVE_HOST:
+        switch ($resultItemKey) {
+            case static::RESULT_ITEM_KEY_HOST:
                 $resultItemKey = 'name';
                 break;
-            case ResolverInterface::RESOLVE_IP_V4:
+            case static::RESULT_ITEM_KEY_IP_V4:
                 $resultItemKey = 'address';
                 break;
-            case ResolverInterface::RESOLVE_IP_V6:
+            case static::RESULT_ITEM_KEY_IP_V6:
                 $resultItemKey = 'address';
+                break;
+            case static::RESULT_ITEM_KEY_TTL:
+                $resultItemKey = 'ttl';
                 break;
             default:
                 throw new ResolveException(sprintf(
-                    'Invalid resolve type: "%s"',
+                    'Invalid result item key: "%s"',
                     $resolve
                 ));
         }
