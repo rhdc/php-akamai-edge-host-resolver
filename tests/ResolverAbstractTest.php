@@ -12,6 +12,7 @@ namespace Rhdc\Akamai\Edge\Resolver\Test;
 use PHPUnit\Framework\TestCase;
 use Rhdc\Akamai\Edge\Resolver\ResolverAbstract;
 use Rhdc\Akamai\Edge\Resolver\ResolverInterface;
+use Rhdc\Akamai\Edge\Resolver\Test\SimpleCache;
 
 class ResolverAbstractTest extends TestCase
 {
@@ -25,6 +26,19 @@ class ResolverAbstractTest extends TestCase
         $this->stub = $this->getMockForAbstractClass(
             'Rhdc\\Akamai\\Edge\\Resolver\\ResolverAbstract'
         );
+    }
+
+    public function testGetSetCache()
+    {
+        $cache = new SimpleCache();
+        $this->stub->setCache($cache);
+        $this->assertSame($cache, $this->stub->getCache());
+    }
+
+    public function testSetCacheFluentInterface()
+    {
+        $cache = new SimpleCache();
+        $this->assertSame($this->stub, $this->stub->setCache($cache));
     }
 
     /**
