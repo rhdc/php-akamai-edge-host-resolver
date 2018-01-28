@@ -28,18 +28,21 @@ class SimpleCache implements CacheInterface
     /**
      * {@inheritdoc}
      */
-    public function get($key, $default = null) {
+    public function get($key, $default = null)
+    {
         return isset($this->data[$key]) ? $this->data[$key] : $default;
     }
 
-    public function getTtl($key) {
+    public function getTtl($key)
+    {
         return isset($this->ttl[$key]) ? $this->ttl[$key] : null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function set($key, $value, $ttl = null) {
+    public function set($key, $value, $ttl = null)
+    {
         $this->data[$key] = $value;
         $this->ttl[$key] = $ttl;
     }
@@ -47,42 +50,48 @@ class SimpleCache implements CacheInterface
     /**
      * {@inheritdoc}
      */
-    public function delete($key) {
+    public function delete($key)
+    {
         throw new RuntimeException('Not implemented');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function clear() {
+    public function clear()
+    {
         throw new RuntimeException('Not implemented');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getMultiple($keys, $default = null) {
+    public function getMultiple($keys, $default = null)
+    {
         throw new RuntimeException('Not implemented');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setMultiple($values, $ttl = null) {
+    public function setMultiple($values, $ttl = null)
+    {
         throw new RuntimeException('Not implemented');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function deleteMultiple($keys) {
+    public function deleteMultiple($keys)
+    {
         throw new RuntimeException('Not implemented');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function has($key) {
+    public function has($key)
+    {
         throw new RuntimeException('Not implemented');
     }
 }
