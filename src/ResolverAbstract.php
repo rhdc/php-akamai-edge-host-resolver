@@ -14,6 +14,14 @@ use Rhdc\Akamai\Edge\Resolver\Exception\NotFoundException;
 
 abstract class ResolverAbstract implements ResolverInterface
 {
+    const RESULT_ITEM_KEY_HOST = self::RESOLVE_HOST;
+
+    const RESULT_ITEM_KEY_IP_V4 = self::RESOLVE_IP_V4;
+
+    const RESULT_ITEM_KEY_IP_V6 = self::RESOLVE_IP_V6;
+
+    const RESULT_ITEM_KEY_TTL = 'ttl';
+
     protected static $edgeHostRegex;
 
     protected static $edgeStagingHostRegex;
@@ -82,10 +90,12 @@ abstract class ResolverAbstract implements ResolverInterface
 
     abstract protected function resolveQuery($host, $resolve);
 
-    abstract protected function resolveResultItemValue($resultItem, $resolve);
+    abstract protected function resolveResultItemValue($resultItem, $resultItemKey);
 
     public function resolve($host, $resolve = ResolverInterface::RESOLVE_HOST, $staging = false)
     {
+        $host = $this->normalizeHost($host);
+
         if ($staging) {
             // Get prod edge host, translate to staging edge host, and reset
             // $host to staging edge host
@@ -100,10 +110,20 @@ abstract class ResolverAbstract implements ResolverInterface
             }
         }
 
-        $result = array();
+        if (isset($this->cache)) {
+            $cacheKey = __METHOD__.'::'.$resolve.'::'.$host;
+            $cacheValue = $this->cache->get($cacheKey);
 
-        foreach ($this->resolveQuery($host, $resolve) as $index => $resultItem) {
-            $host = $this->resolveResultItemValue($resultItem, ResolverInterface::RESOLVE_HOST);
+            if (isset($cacheValue)) {
+                return $cacheValue;
+            }
+        }
+
+        $result = array();
+        $ttl = null;
+
+        foreach ($this->resolveQuery($host, $resolve) as $resultItem) {
+            $host = $this->resolveResultItemValue($resultItem, static::RESULT_ITEM_KEY_HOST);
 
             if (isset($host) && $this->isEdgeHost($host, $staging)) {
                 if ($resolve === ResolverInterface::RESOLVE_HOST) {
@@ -115,6 +135,11 @@ abstract class ResolverAbstract implements ResolverInterface
                         $result[] = $resultItemValue;
                     }
                 }
+
+                $itemTtl = $this->resolveResultItemValue($resultItem, static::RESULT_ITEM_KEY_TTL);
+                if (!isset($ttl) || ($itemTtl < $ttl)) {
+                    $ttl = $itemTtl;
+                }
             }
         }
 
@@ -125,8 +150,14 @@ abstract class ResolverAbstract implements ResolverInterface
             ));
         }
 
-        return $resolve === ResolverInterface::RESOLVE_HOST
-            ? $result[0]
-            : $result;
+        if ($resolve === ResolverInterface::RESOLVE_HOST) {
+            $result = $result[0];
+        }
+
+        if (isset($this->cache)) {
+            $this->cache->set($cacheKey, $result, $ttl);
+        }
+
+        return $result;
     }
 }
